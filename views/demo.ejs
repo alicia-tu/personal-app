@@ -1,0 +1,98 @@
+<%- include('bootheader') -%>
+<%- include('menubar') -%>
+
+<div class="jumbotron">
+    <h1>Here you put in your own information</h1>
+</div>
+
+<p> List your personal information like <a href = \about> Alicia </a> !</p>
+<hr>
+<p> On this page, you will put in these information one by one </p>
+<ul>
+  <li> name </li>
+  <li> age </li>
+  <li> school </li>
+  <li> perfer cat or dog </li>
+  <li> major </li>
+  <li> hometown </li>
+  <li> favorite color </li>
+  </ul>
+  <p> Then you will hit submit </p>
+  <hr>
+
+<form method="post" action="/showformdata" class="bg-muted">
+Enter your name:
+<input type = "text"
+  name = "fullname"
+  placeholder = "your full name"> <br>
+  <hr>
+Enter your age:
+<input type = "text"
+  age = "age"
+  placeholder = "your age"> <br>
+  <hr>
+
+Are you a student at <a href = "http://www.brandeis.edu">
+Brandeis University</a>?<br>
+yes <input type = "radio" name = "Brandeis" value = "yes"> <br>
+no <input type = "radio" name = "Brandeis" value = "no"> <br>
+<hr>
+
+<div class = "row">
+  <div class = "col">
+    Are you a cat person or a dog person? <br>
+    cat <input type = "radio" name = "animal" value = "cat"> <br>
+    dog <input type = "radio" name = "animal" value = "dog"> <br>
+  </div>
+  <div class = "col">
+    <img width = "150" src = "/images/dogs.jpg">
+  </div>
+  <div class = "col">
+    <img width = "150" src = "/images/cat.jpg">
+</div>
+</div>
+<hr>
+
+  What is your major? <br>
+  <textarea name="bio" rows="10" cols="40"></textarea>
+  <br>
+  <hr>
+
+  Where are you from (select both if you have lived in both places)? <br>
+  U.S. <input type = "checkbox" name = "hometown" value = "US"> <br>
+  Outside of U.S.
+    <input type = "checkbox" name = "hometown" value = "not US"><br>
+ <hr>
+
+  <table class = "table table-bordered table-striped" >
+    <thead>
+      <tr><th>Primary Colors</th>
+        <th>Secondary Colors</th> </tr>
+    </thead>
+    <tbody>
+      <tr><td> red </td>
+        <td> orange </td> </tr>
+      <tr><td> yellow </td>
+        <td> green </td> </tr>
+      <tr><td> blue</td>
+        <td> purple </td> </tr>
+    </tbody>
+  </table>
+  What is your favorite color (from above)?
+  <select name = "color">
+    <option> red </option>
+    <option> orange </option>
+    <option> yellow </option>
+    <option> green </option>
+    <option> blue </option>
+    <option> purple </option>
+    </select>
+    <br>
+
+<hr>
+<input type = "submit" value = "register">
+
+</form>
+
+<hr>
+<%- include('bootfooter') -%>
