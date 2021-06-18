@@ -1,0 +1,15 @@
+<%- include('bootheader') -%>
+<%- include('menubar') -%>
+    <div class="jumbotron">
+        <h1>COVID 19 Data</h1>
+    </div>
+    <form method = "post" action ="/c19">
+      Enter a date (in form of year+month+day, e.g. 20200501): <br>
+      <input type = "number"
+      name = "date"> <br>
+      <input type ="submit">
+    </form>
+
+
+
+<%- include('bootfooter') -%>

@@ -12,6 +12,7 @@
   <li> name </li>
   <li> age </li>
   <li> school </li>
+  <li> your picture </li>
   <li> perfer cat or dog </li>
   <li> major </li>
   <li> hometown </li>
@@ -20,23 +21,27 @@
   <p> Then you will hit submit </p>
   <hr>
 
-<form method="post" action="/showformdata" class="bg-muted">
+<form method="post" action="/personal" class="bg-muted">
 Enter your name:
 <input type = "text"
   name = "fullname"
   placeholder = "your full name"> <br>
   <hr>
-Enter your age:
-<input type = "text"
-  age = "age"
-  placeholder = "your age"> <br>
+Enter your birthyear:
+<input type = "number"
+  name = "age"
+  placeholder = "your birthyear"> <br>
   <hr>
 
-Are you a student at <a href = "http://www.brandeis.edu">
+Are you a new student at <a href = "http://www.brandeis.edu">
 Brandeis University</a>?<br>
 yes <input type = "radio" name = "Brandeis" value = "yes"> <br>
 no <input type = "radio" name = "Brandeis" value = "no"> <br>
 <hr>
+
+Upload a picture of yourself (use url):
+<input type = "text"
+ name = "url"> <br><hr>
 
 <div class = "row">
   <div class = "col">
@@ -58,7 +63,10 @@ no <input type = "radio" name = "Brandeis" value = "no"> <br>
   <br>
   <hr>
 
-  Where are you from (select both if you have lived in both places)? <br>
+  Where are you from? <br>
+  <input type = "text" name = "home"> <br> <hr>
+
+  Where did you grow up (select both if you have lived in both places)? <br>
   U.S. <input type = "checkbox" name = "hometown" value = "US"> <br>
   Outside of U.S.
     <input type = "checkbox" name = "hometown" value = "not US"><br>
@@ -79,7 +87,7 @@ no <input type = "radio" name = "Brandeis" value = "no"> <br>
     </tbody>
   </table>
   What is your favorite color (from above)?
-  <select name = "color">
+  <select name = "color" required>
     <option> red </option>
     <option> orange </option>
     <option> yellow </option>

@@ -52,15 +52,53 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/demo",
-        function (req, res){res.render("demo");});
+app.get("/demo", (request, response) =>{
+  response.render("demo")
+});
 
 app.get("/about", (request, response) => {
   response.render("about");
 });
 
-app.post("/showformdata", (request,response) => {
-  response.json(request.body)
+app.get ("/covid19", (request, response) => {
+  response.render ("covid19");
+})
+
+app.post("/c19",
+  async (req,res,next) => {
+    try {
+      const date = req.body.date
+      const url = "https://covidtracking.com/api/v1/us/"+date+".json"
+      const result = await axios.get(url)
+      console.dir(result.data)
+      console.log('')
+      console.dir(result.data.date)
+      res.locals.date = result.data.date
+      res.locals.states = result.data.states
+      res.locals.positive =result.data.positive
+      res.locals.negative =result.data.negative
+      res.locals.pending =result.data.pending
+      res.locals.death = result.data.death
+      res.locals.hospitalized =result.data.hospitalized
+      res.locals.totalTestResults = result.data.totalTestResults
+      res.render('covid19Data')
+    } catch(error){
+      next(error)
+    }
+})
+
+app.post("/personal", (request,response) => {
+  const birthyear = parseFloat(request.body.age)
+  const currentAge = (2021-birthyear)
+  response.locals.name = request.body.fullname
+  response.locals.age = currentAge
+  response.locals.school = request.body.school
+  response.locals.animal = request.body.animal
+  response.locals.bio = request.body.bio
+  response.locals.home = request.body.home
+  response.locals.color = request.body.color
+  response.locals.url = request.body.url
+  response.render ("personal")
 })
 // Here is where we will explore using forms!
 
@@ -81,19 +119,6 @@ app.get("/c19",
     }
 })
 
-// this shows how to use an API to get recipes
-// http://www.recipepuppy.com/about/api/
-// the example here finds omelet recipes with onions and garlic
-app.get("/omelet",
-  async (req,res,next) => {
-    try {
-      const url = "http://www.recipepuppy.com/api/?i=onions,garlic&q=omelet&p=3"
-      const result = await axios.get(url)
-      res.json(result.data)
-    } catch(error){
-      next(error)
-    }
-})
 
 // Don't change anything below here ...
 

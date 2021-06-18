@@ -1,0 +1,28 @@
+<%- include('bootheader') -%>
+<%- include('menubar') -%>
+    <div class="jumbotron">
+        <h1>Here is your self introduction!</h1>
+        <h4>Are they all correct?</h4> <hr>
+
+    </div>
+      <h2>About <%= name %> </h2>
+      <div class = "row">
+        <div class = "col bg-warning">
+      <p>
+        I am a new student at Brandeis University.</p>
+      <br>
+      <p><%= bio %> </p><br>
+      <p>I am <%= age %> years old.</p> <br>
+      <p>I am from <%= home %>. </p>
+      <br>
+      <p> I like the color <%= color %></p>
+
+      </div>
+      <div class = "col">
+        <img src="<%= url %>" width="100%">
+        </div>
+        </div>
+
+
+
+<%- include('bootfooter') -%>
