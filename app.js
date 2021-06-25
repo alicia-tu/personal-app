@@ -3,50 +3,67 @@
 */
 
 // First we load in all of the packages we need for the server...
-const createError = require("http-errors");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
-//const bodyParser = require("body-parser");
-const axios = require("axios");
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+const axios = require ('axios');
+const layouts = require("express-ejs-layouts");
 var debug = require("debug")("personalapp:server");
+
+const mongoose = require( 'mongoose' );
+//mongoose.connect( `mongodb+srv://${auth.atlasAuth.username}:${auth.atlasAuth.password}@cluster0-yjamu.mongodb.net/authdemo?retryWrites=true&w=majority`);
+mongoose.connect( 'mongodb://localhost/authDemo');
+//const mongoDB_URI = process.env.MONGODB_URI
+//mongoose.connect(mongoDB_URI)
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("we are connected!!!")
+});
+
+const User = require('./models/User');
+const ClassList = require ('./models/ClassList')
+
+const authRouter = require('./routes/authentication');
+const isLoggedIn = authRouter.isLoggedIn
+const loggingRouter = require('./routes/logging');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const toDoRouter = require('./routes/todo');
 
 // Now we create the server
 const app = express();
 
-// Here we specify that we will be using EJS as our view engine
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+app.use(cors());
+app.use(layouts);
 
-// Here we process the requests so they are easy to handle
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Here we specify that static files will be in the public folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use(authRouter)
+app.use(loggingRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/todo',toDoRouter);
 
-// Here we enable session handling ..
-app.use(
-  session({
-    secret: "zzbbya789fds89snana789sdfa",
-    resave: false,
-    saveUninitialized: false
-  })
-);
+const myLogger = (req,res,next) => {
+  console.log('inside a route!')
+  next()
+}
 
 //app.use(bodyParser.urlencoded({ extended: false }));
-
-// This is an example of middleware
 // where we look at a request and process it!
-app.use(function(req, res, next) {
-  //console.log("about to look for routes!!! "+new Date())
-  console.log(`${req.method} ${req.url}`);
-  //console.dir(req.headers)
-  next();
-});
-
 // here we start handling routes
 app.get("/", (req, res) => {
   res.render("index");
@@ -62,6 +79,10 @@ app.get("/about", (request, response) => {
 
 app.get ("/covid19", (request, response) => {
   response.render ("covid19");
+})
+
+app.get("/example", (req, res)=>{
+  res.render("example")
 })
 
 app.post("/c19",
@@ -102,23 +123,101 @@ app.post("/personal", (request,response) => {
 })
 // Here is where we will explore using forms!
 
+app.get('/profile',
+    isLoggedIn,
+    (req,res) => {
+      res.render('profile')
+    })
 
+app.get('/profiles',
+    isLoggedIn,
+      async (req,res,next) => {
+        try {
+          res.locals.profiles = await User.find({})
+          res.render('profiles')
+          }
+        catch(e){
+          next(e)
+        }
+      })
 
-// this example shows how to get the current US covid data
-// and send it back to the browser in raw JSON form, see
-// https://covidtracking.com/data/api
-// for all of the kinds of data you can get
-app.get("/c19",
-  async (req,res,next) => {
-    try {
-      const url = "https://covidtracking.com/api/v1/us/current.json"
-      const result = await axios.get(url)
-      res.json(result.data)
-    } catch(error){
+app.get('/editProfile',
+    isLoggedIn,
+    (req,res) => res.render('editProfile'))
+
+app.post('/editProfile',
+    isLoggedIn,
+      async (req,res,next) => {
+        try {
+          let username = req.body.username
+          let age = req.body.age
+          req.user.username = username
+          req.user.age = age
+          req.user.imageURL = req.body.imageURL
+          await req.user.save()
+          res.redirect('/profile')
+          } catch (error) {
       next(error)
-    }
+      }
+  })
+
+  app.get("/class", async (req,res,next) => {
+    res.render('class')
+  })
+
+  app.post("/class",
+  isLoggedIn,
+  async (req,res,next) => {
+    const className = req.body.className
+    const credit = req.body.credit
+    const classlist = new ClassList({
+      userId:req.user._id,
+      className: className,
+      credit:credit
+    })
+    const result = await classlist.save()
+    console.log('result=')
+    console.dir(result)
+    res.redirect('/showClass')
 })
 
+app.get('/showClass', isLoggedIn,
+  async (req,res,next) => {
+    res.locals.classlist = await ClassList.find({userId:req.user._id})
+    console.log('classlist='+JSON.stringify(res.locals.classlist.length))
+    res.render('showClass')
+  })
+
+app.get('/showClass', isLoggedIn,
+  async (req, res, next) =>{
+    res.locals.classlist = await ClassList.find({className:req.body.className})
+  })
+
+app.get('/allclass', isLoggedIn,
+    async (req,res,next) => {
+      res.locals.classlist = await ClassList.find({})
+      console.log('classlist='+JSON.stringify(res.locals.classlist.length))
+      res.render('showClass')
+    })
+
+app.get('/showClass/last/:N', isLoggedIn,
+    async (req,res,next) => {
+      const N = parseInt(req.params.N)
+      const classlist = await Classlist.find({})
+      res.locals.classlist = classlist.slice(0,N)
+      console.log('classlist='+JSON.stringify(res.locals.classlist.length))
+      res.render('showClass')
+    })
+
+app.get('/classlistremove/:classes_id', isLoggedIn,
+  async (req,res,next) => {
+
+    const classes_id = req.params.classes_id
+    console.log(`id=${classes_id}`)
+    await ClassList.deleteOne({_id:classes_id})
+    res.redirect('/showClass')
+
+  })
 
 // Don't change anything below here ...
 

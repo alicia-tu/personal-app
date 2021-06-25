@@ -1,13 +1,25 @@
 <%- include('bootheader') -%>
-<%- include('menubar') -%>
-    <div class="jumbotron">
-        <h1>Personal Information Gatherer</h1>
-        <p>Collect information from new Brandeis students </p>
-        <p> This app collects your name, age, school, favorite animal,
-          academic interests, hometown, and favorite color. </p>
 
-    </div>
+<div class="jumbotron">
 
+<h1> App for new Brandeis Students </h1>
 
+<p>Welcome to Brandeis! </p>
+
+<ul>
+  <li><a href="/about"> About </a></li>
+  <li><a href="/demo"> Personal Information Gatherer </a> </li>
+  <li><a href="/example"> Example class list </a></li>
+  <li><a href="/covid19"> COVID19 data </a></li>
+  <% if (loggedIn) {%>
+  <li></li>
+  <li><a href="/class">Go to the class page </a></li>
+  <li><a href="/profile">See your profile </a></li>
+  <li><a href="/profiles">See everyone's profile</a></li>
+  <li><a href="/majors">See your class list </a></li>
+  <li><a href="/clubs">See your club list </a> </li>
+  <% } %>
+</ul>
+</div>
 
 <%- include('bootfooter') -%>

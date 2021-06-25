@@ -1,0 +1,43 @@
+
+
+  <div class="jumbotron">
+
+  <h1> Class List demo </h1>
+  <h2> List of all classes you decide to take: </h2>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr><th>Class Name</th><th>credit</th><th>userId</th></tr>
+    </thead>
+    <tbody>
+  <% for(let i=0; i<classlist.length; i++){
+      classes = classlist[i]
+      console.log(`i=${i} document=${classes}`)
+  %>
+    <tr>
+      <td> 
+          <%= classes.className %>
+      </td>
+      <td><%= classes.credit %></td>
+      <td>
+          <!--  only the owner can delete an apikey  -->
+          <% if (user.id==classes.userId) {%>
+              <a href="/classlistremove/<%= classes._id %>"> X </a>
+          <%}%>
+          <%= classes.userId %>
+      </td>
+
+    </tr>
+  <%}%>
+  </tbody>
+  </table>
+
+  <h2>Add another class?</h2>
+
+  <form method="post" action="/class">
+    <input type="text" name="className"> Class Name <br>
+    <input type="text" name="credit"> Credit <br>
+    <input type="submit">
+  </form>
+  </div>
+
+  <!-- Hello World! -->

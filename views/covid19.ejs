@@ -1,13 +1,12 @@
 <%- include('bootheader') -%>
-<%- include('menubar') -%>
+
     <div class="jumbotron">
-        <h1>COVID 19 Data</h1>
+        <h1>Check Covid-19 Stats!</h1>
     </div>
-    <form method = "post" action ="/c19">
-      Enter a date (in form of year+month+day, e.g. 20200501): <br>
-      <input type = "number"
-      name = "date"> <br>
-      <input type ="submit">
+    <form method = "post" action = "/c19">
+    Enter a date that you want to look up (in the form of 20200501) <br>
+    <input type = "text" name = "date">
+    <input type = submit>
     </form>
 
 
