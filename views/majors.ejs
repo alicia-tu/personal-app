@@ -2,9 +2,38 @@
 
     <div class="jumbotron">
         <h1>List your intended major and minors!</h1>
+        <br>
+        <form method = "post" action = "/majors">
+          <input type = "text" name = "majorName" size = "50"> Major Name
+          <br>
+          <input type = "text" name = "majorType" size = "50"> BS or BA
+          <br>
+          <input type = "text" name = "createdAt" size = "50>"> Created At
+          <br>
+          <input type = "submit">
+        </form>
 
-    </div>
-    
+    <table class="table table-bordered table-striped">
+    <thead>
+      <tr> <th> Major </th> <th> Type </th> <th> Created At </th></tr>
+    </thead>
+    <tbody>
+      <% for(let i=0; i<majors.length; i++){
+          major = majors[i]
+          console.log(`i=${i} document=${major}`)
+      %>
+        <tr>
+          <td>
+              <%= major.majorName %>
+          </td>
+          <td><%= major.majorType %></td>
+          <td>
+            <%= major.createdAt %> </td>
+        </tr>
+      <%}%>
+
+  </div>
+
 
 
 <%- include('bootfooter') -%>

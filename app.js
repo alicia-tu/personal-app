@@ -27,6 +27,7 @@ db.once('open', function() {
 
 const User = require('./models/User');
 const ClassList = require ('./models/ClassList')
+const MajorList = require ('./models/MajorList')
 
 const authRouter = require('./routes/authentication');
 const isLoggedIn = authRouter.isLoggedIn
@@ -150,10 +151,7 @@ app.post('/editProfile',
       async (req,res,next) => {
         try {
           let username = req.body.username
-          let age = req.body.age
           req.user.username = username
-          req.user.age = age
-          req.user.imageURL = req.body.imageURL
           await req.user.save()
           res.redirect('/profile')
           } catch (error) {
@@ -218,6 +216,31 @@ app.get('/classlistremove/:classes_id', isLoggedIn,
     res.redirect('/showClass')
 
   })
+
+app.post('/majors',
+  isLoggedIn,
+  async(req, res, next) =>{
+    const majorName = req.body.majorName
+    const majorType = req.body.majorType
+    const createdAt = req.body.createdAt
+    const majorlist = new MajorList ({
+      userId:req.user._id,
+      createdAt: createdAt,
+      majorType: majorType,
+      majorName: majorName
+    })
+    const result = await majorlist.save()
+    console.log ('result =')
+    console.dir (result)
+    res.redirect ('/majors')
+  })
+
+  app.get('/majors',
+    isLoggedIn,
+    async(req, res, next) =>{
+      res.locals.majors = await MajorList.find({})
+      res.render ('majors')
+    })
 
 // Don't change anything below here ...
 
