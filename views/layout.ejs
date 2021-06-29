@@ -4,30 +4,28 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1">
-	<title>Brandeis Courses Fall19-Sum20</title>
+	<title> APP for Brandeis Freshman</title>
 	<link rel="shortcut icon" type="image/png" href="/images/icon.png" />
 	<link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 
 <body>
- <div class="container-fluid">
 	<div id="nav">
 		<div class="col-sm nav-align">
-			<a href="/">
-				<span class="button">Home</span>
-			</a>
 			<% if (!loggedIn) {%>
 			<a href="/auth/google">
-				<span class="button">Login</span>
+				<span class="button btn btn-outline-primary">Login</span>
 			</a>
 			<% } else  { %>
 				<%= user.googleemail %>
 			<a href="/logout">
-				<span class="button">Logout</span>
+				<span class="button btn btn-outline-primary">Logout</span>
+			</a>
+			<a href="/">
+				<span class="button btn btn-outline-primary">Home</span>
 			</a>
 			<% } %>
 
-		</div>
 	</div>
 
 	<%- body %>

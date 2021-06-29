@@ -1,0 +1,35 @@
+<%- include('bootheader') -%>
+
+
+<div class="jumbotron">
+    <h1> Posts </h1>
+    <br>
+    <p> Here everyone can post their thoughts </p>
+
+<br>
+<form method = "post" action = "/posts">
+  Write your name here: <br>
+  <input type = "text" name = "name" size = "10">
+  <br>
+  Write your post here: <br>
+  <input type = "text" name = "postText" size = "60">
+  <br>
+  <input type = "submit">
+</form>
+
+
+<ul>
+<% for(let i=0; i<posttexts.length; i++){
+  posttext = posttexts[i]
+  console.log(`i=${i} document=${posttext}`)
+%>
+<li>
+  <%= posttext.postText %> <br>
+   -- <%= posttext.name %>
+   <a href="/postremove"> X </a>
+</li>
+<%}%>
+</ul>
+
+</div>
+<%- include('bootfooter') -%>

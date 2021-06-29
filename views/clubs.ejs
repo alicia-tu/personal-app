@@ -1,0 +1,39 @@
+<%- include('bootheader') -%>
+
+    <div class="jumbotron">
+        <h1>List clubs that you would like to join!</h1>
+        <br>
+        <form method = "post" action = "/clubs">
+          <input type = "text" name = "clubName" size = "50"> Club Name
+          <br>
+          <input type = "text" name = "clubType" size = "50"> Club Type
+          <br>
+          <input type = "text" name = "createdAt" size = "50>"> Created At
+          <br>
+          <input type = "submit">
+        </form>
+
+    <table class="table table-bordered table-striped">
+    <thead>
+      <tr> <th> Club </th> <th> Type </th> <th> Created At </th></tr>
+    </thead>
+    <tbody>
+      <% for(let i=0; i<clubs.length; i++){
+          club = clubs[i]
+          console.log(`i=${i} document=${club}`)
+      %>
+        <tr>
+          <td>
+              <%= club.clubName %>
+          </td>
+          <td><%= club.clubType %></td>
+          <td>
+            <%= club.createdAt %> </td>
+        </tr>
+      <%}%>
+
+  </div>
+
+
+
+<%- include('bootfooter') -%>

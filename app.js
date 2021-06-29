@@ -28,13 +28,15 @@ db.once('open', function() {
 const User = require('./models/User');
 const ClassList = require ('./models/ClassList')
 const MajorList = require ('./models/MajorList')
+const ClubList = require ('./models/ClubList')
+const PostList = require('./models/PostList')
 
 const authRouter = require('./routes/authentication');
 const isLoggedIn = authRouter.isLoggedIn
 const loggingRouter = require('./routes/logging');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const toDoRouter = require('./routes/todo');
+
 
 // Now we create the server
 const app = express();
@@ -56,7 +58,7 @@ app.use(authRouter)
 app.use(loggingRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/todo',toDoRouter);
+
 
 const myLogger = (req,res,next) => {
   console.log('inside a route!')
@@ -85,6 +87,7 @@ app.get ("/covid19", (request, response) => {
 app.get("/example", (req, res)=>{
   res.render("example")
 })
+
 
 app.post("/c19",
   async (req,res,next) => {
@@ -142,23 +145,6 @@ app.get('/profiles',
         }
       })
 
-app.get('/editProfile',
-    isLoggedIn,
-    (req,res) => res.render('editProfile'))
-
-app.post('/editProfile',
-    isLoggedIn,
-      async (req,res,next) => {
-        try {
-          let username = req.body.username
-          req.user.username = username
-          await req.user.save()
-          res.redirect('/profile')
-          } catch (error) {
-      next(error)
-      }
-  })
-
   app.get("/class", async (req,res,next) => {
     res.render('class')
   })
@@ -209,12 +195,24 @@ app.get('/showClass/last/:N', isLoggedIn,
 
 app.get('/classlistremove/:classes_id', isLoggedIn,
   async (req,res,next) => {
-
     const classes_id = req.params.classes_id
     console.log(`id=${classes_id}`)
     await ClassList.deleteOne({_id:classes_id})
     res.redirect('/showClass')
 
+  })
+
+app.get('/majorremove',
+  isLoggedIn,
+  async(req, res, next) =>{
+    await MajorList.deleteOne({})
+    res.redirect('/majors')
+})
+
+app.get('/postremove',
+  async (req, res, next) =>{
+    await PostList.deleteOne({})
+    res.redirect('/posts')
   })
 
 app.post('/majors',
@@ -241,6 +239,52 @@ app.post('/majors',
       res.locals.majors = await MajorList.find({})
       res.render ('majors')
     })
+
+  app.get("/posts",
+    async(req, res, next) =>{
+      res.locals.posttexts = await PostList.find({})
+      res.render("posts")
+    })
+
+  app.post('/clubs',
+  isLoggedIn,
+  async(req, res, next) =>{
+    const clubName = req.body.clubName
+    const clubType = req.body.clubType
+    const createdAt = req.body.createdAt
+    const clubList = new ClubList({
+      userId: req.user._id,
+      createdAt: createdAt,
+      clubType: clubType,
+      clubName: clubName
+    })
+    const result = await clubList.save()
+    console.log('result =')
+    console.dir(result)
+    res.redirect('/clubs')
+  })
+
+  app.post('/posts',
+  async(req, res, next) =>{
+    const name = req.body.name
+    const postText = req.body.postText
+    const postList = new PostList({
+      name: name,
+      userId: req.user._id,
+      postText: postText
+    })
+    const result = await postList.save()
+    console.log('result =')
+    console.dir(result)
+    res.redirect('/posts')
+  })
+
+  app.get('/clubs',
+  isLoggedIn,
+  async(req, res, next) =>{
+    res.locals.clubs = await ClubList.find({})
+    res.render('clubs')
+  })
 
 // Don't change anything below here ...
 

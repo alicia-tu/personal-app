@@ -1,8 +1,49 @@
 <%- include('bootheader') -%>
-
-<div class="jumbotron">
+<div class = "jumbotron">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" > App </a>
+    <button class="navbar-toggler" type="button"
+    data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown" aria-expanded="false"
+    aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/index">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/demo">Personal Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">Example</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/covid19"> COVID19 Data </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/post"> Posts </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/profile">Profile </a></li>
+            <li><a class="dropdown-item" href="/class">Class List </a></li>
+            <li><a class="dropdown-item" href="/majors">Major List</a></li>
+            <li><a class="dropdown-item" href="/clubs">Club List</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <h1> App for new Brandeis Students </h1>
+<br>
 
 <p>Welcome to Brandeis! </p>
 
@@ -11,11 +52,12 @@
   <li><a href="/demo"> Personal Information Gatherer </a> </li>
   <li><a href="/example"> Example class list </a></li>
   <li><a href="/covid19"> COVID19 data </a></li>
+  <li><a href="/posts"> Posts </a> </li>
   <% if (loggedIn) {%>
-  <li></li>
-  <li><a href="/class">Go to the class page </a></li>
+  <br>
   <li><a href="/profile">See your profile </a></li>
   <li><a href="/profiles">See everyone's profile</a></li>
+  <li><a href="/class">See your class list </a></li>
   <li><a href="/majors">See your major list </a></li>
   <li><a href="/clubs">See your club list </a> </li>
   <% } %>
