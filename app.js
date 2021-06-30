@@ -88,6 +88,11 @@ app.get("/example", (req, res)=>{
   res.render("example")
 })
 
+app.get("/intro", (req, res) =>{
+  res.render("intro")
+})
+
+
 
 app.post("/c19",
   async (req,res,next) => {
