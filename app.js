@@ -93,7 +93,6 @@ app.get("/intro", (req, res) =>{
 })
 
 
-
 app.post("/c19",
   async (req,res,next) => {
     try {
@@ -275,7 +274,6 @@ app.post('/majors',
     const postText = req.body.postText
     const postList = new PostList({
       name: name,
-      userId: req.user._id,
       postText: postText
     })
     const result = await postList.save()
