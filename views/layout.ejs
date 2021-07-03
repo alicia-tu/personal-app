@@ -13,6 +13,9 @@
 <body>
 	<div id="nav">
 		<div class="col-sm nav-align">
+			<a href="/">
+				<span class="button btn btn-outline-primary">Home</span>
+			</a>
 			<% if (!loggedIn) {%>
 			<a href="/auth/google">
 				<span class="button btn btn-outline-primary">Login</span>
@@ -21,9 +24,6 @@
 				<%= user.googleemail %>
 			<a href="/logout">
 				<span class="button btn btn-outline-primary">Logout</span>
-			</a>
-			<a href="/">
-				<span class="button btn btn-outline-primary">Home</span>
 			</a>
 			<% } %>
 
